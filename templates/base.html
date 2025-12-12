@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导了吗签到系统</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-brand">🚫 导了吗</a>
+            <div class="nav-links">
+                {% if g.user %}
+                    <span class="username">{{ g.user.username }}</span>
+                    <a href="{{ url_for('index') }}">首页</a>
+                    <a href="{{ url_for('leaderboard') }}">禁欲榜</a>
+                    <a href="{{ url_for('logout') }}">退出</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">登录</a>
+                    <a href="{{ url_for('register') }}">注册</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

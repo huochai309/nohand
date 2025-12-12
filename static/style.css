@@ -1,0 +1,303 @@
+/* static/style.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* 导航栏 */
+nav {
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 15px 20px;
+    margin-bottom: 30px;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1890ff;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #666;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.nav-links a:hover {
+    background: #f0f2f5;
+    color: #1890ff;
+}
+
+.nav-links .username {
+    color: #666;
+    font-weight: bold;
+}
+
+/* 卡片样式 */
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.card h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* 签到按钮 */
+.checkin-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.btn {
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 150px;
+}
+
+.btn-yes {
+    background: #ff4d4f;
+    color: white;
+}
+
+.btn-yes:hover {
+    background: #ff7875;
+    transform: translateY(-2px);
+}
+
+.btn-no {
+    background: #52c41a;
+    color: white;
+}
+
+.btn-no:hover {
+    background: #73d13d;
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: #1890ff;
+    color: white;
+    padding: 10px 30px;
+    width: 100%;
+}
+
+/* 表格样式 */
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.leaderboard-table th {
+    background: #fafafa;
+    font-weight: bold;
+    color: #333;
+}
+
+.leaderboard-table tr:hover {
+    background: #fafafa;
+}
+
+/* 状态标签 */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.status-no {
+    background: #f6ffed;
+    color: #52c41a;
+    border: 1px solid #b7eb8f;
+}
+
+.status-yes {
+    background: #fff1f0;
+    color: #ff4d4f;
+    border: 1px solid #ffa39e;
+}
+
+.status-none {
+    background: #fafafa;
+    color: #666;
+    border: 1px solid #d9d9d9;
+}
+
+/* 表单样式 */
+.auth-form {
+    max-width: 400px;
+    margin: 50px auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24,144,255,0.2);
+}
+
+/* 消息提示 */
+.flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.message {
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: slideIn 0.3s ease;
+}
+
+.message.success {
+    border-left: 4px solid #52c41a;
+    color: #52c41a;
+}
+
+.message.error {
+    border-left: 4px solid #ff4d4f;
+    color: #ff4d4f;
+}
+
+.message.info {
+    border-left: 4px solid #1890ff;
+    color: #1890ff;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* 今日已签到 */
+.already-checked {
+    text-align: center;
+    padding: 30px;
+    background: #f6ffed;
+    border: 1px solid #b7eb8f;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.already-checked h3 {
+    color: #52c41a;
+    margin-bottom: 10px;
+}
+
+/* 当前用户高亮 */
+.current-user {
+    background: #e6f7ff !important;
+    font-weight: bold;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .nav-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .checkin-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .leaderboard-table {
+        display: block;
+        overflow-x: auto;
+    }
+}

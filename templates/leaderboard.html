@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>禁欲榜 - 导了吗签到系统</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial; background: #f5f5f5; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        
+        .header { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 10px; 
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo { font-size: 24px; font-weight: bold; color: #1890ff; }
+        .user-info { color: #666; }
+        .nav a { margin-left: 15px; color: #1890ff; text-decoration: none; }
+        .nav a:hover { text-decoration: underline; }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-title h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .page-title p {
+            color: #666;
+        }
+        
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        th {
+            background: #fafafa;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        tr:hover {
+            background: #fafafa;
+        }
+        
+        .current-user {
+            background: #e6f7ff !important;
+            font-weight: bold;
+        }
+        
+        .rank-1 { color: #ffd700; font-weight: bold; }
+        .rank-2 { color: #c0c0c0; font-weight: bold; }
+        .rank-3 { color: #cd7f32; font-weight: bold; }
+        
+        .status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-no { background: #f6ffed; color: #52c41a; }
+        .status-yes { background: #fff1f0; color: #ff4d4f; }
+        .status-none { background: #fafafa; color: #666; }
+        
+        .days {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #1890ff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        
+        .back-link:hover {
+            background: #40a9ff;
+        }
+        
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        .error { background: #fff1f0; color: #ff4d4f; border: 1px solid #ffa39e; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">🚫 导了吗签到系统</div>
+            <div class="user-info">
+                {% if g.user %}
+                    {{ g.user.username }} | 
+                    <div class="nav">
+                        <a href="{{ url_for('index') }}">首页</a>
+                        <a href="{{ url_for('leaderboard') }}">禁欲榜</a>
+                        <a href="{{ url_for('logout') }}">退出</a>
+                    </div>
+                {% else %}
+                    <div class="nav">
+                        <a href="{{ url_for('login') }}">登录</a>
+                        <a href="{{ url_for('register') }}">注册</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="page-title">
+            <h1>🏆 禁欲榜</h1>
+            <p>看看谁最持久！按连续"没导"天数排序</p>
+        </div>
+        
+        <div class="card">
+            {% if leaderboard %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th width="80">排名</th>
+                            <th>用户</th>
+                            <th width="100">状态</th>
+                            <th width="120">持续天数</th>
+                            <th width="150">上次签到</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in leaderboard %}
+                        <tr {% if g.user and entry.username == g.user.username %}class="current-user"{% endif %}>
+                            <td class="rank-{% if loop.index == 1 %}1{% elif loop.index == 2 %}2{% elif loop.index == 3 %}3{% endif %}">
+                                {{ loop.index }}
+                            </td>
+                            <td>
+                                {{ entry.username }}
+                                {% if g.user and entry.username == g.user.username %}
+                                    <span style="color: #1890ff;"> (你)</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if entry.status == '没导' %}
+                                    <span class="status status-no">没导</span>
+                                {% elif entry.status == '导了' %}
+                                    <span class="status status-yes">导了</span>
+                                {% else %}
+                                    <span class="status status-none">未签到</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if entry.status == '没导' %}
+                                    <div class="days">{{ entry.days }}</div>
+                                    <div style="font-size: 14px; color: #666;">天</div>
+                                {% elif entry.status == '导了' %}
+                                    <div style="color: #999;">0 天</div>
+                                {% else %}
+                                    <div style="color: #ccc;">-</div>
+                                {% endif %}
+                            </td>
+                            <td>{{ entry.last_date or '从未签到' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p style="text-align: center; color: #999; padding: 40px;">暂无签到数据</p>
+            {% endif %}
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="{{ url_for('index') }}" class="back-link">返回首页</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
